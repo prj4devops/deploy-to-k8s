@@ -4,7 +4,7 @@ podTemplate(
     containerTemplate(
       name: 'maven',
       image: 'maven:3-jdk-8',
-      resourceLimitMemory: '200Mi',
+      resourceLimitMemory: '300Mi',
       ttyEnabled: true,
       command: 'cat'
     ),
@@ -30,7 +30,7 @@ podTemplate(
         }
         stage('packaing'){
             container('maven'){
-                sh 'export MAVEN_OPTS=-Xmx200m; mvn package'
+                sh 'export MAVEN_OPTS=-Xmx300m; mvn package'
             }
         }
         stage('build docker container') {
