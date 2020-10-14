@@ -41,8 +41,11 @@ podTemplate(
         }
         stage('update pods'){
             container('kustomize'){
-                sh 'kustomize edit set image 192.168.1.10:8443/echo-buildtime:$BUILD_NUMBER'
-                sh 'kustomize build  | kubectl apply -f -'
+                sh 'cd ./deployment'
+                sh 'kustomize create --resources ./deployment.yaml'
+                sh 'cd ..'
+                sh 'cd ./service'
+                sh 'blue-green.sh $BUILD_NUMBER'
             }
         }
 
