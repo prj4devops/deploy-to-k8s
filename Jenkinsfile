@@ -65,7 +65,7 @@ podTemplate(
                   echo "switching new deployment"
                   kustomize edit add label deploy:$BUILD_NUMBER -f
                   kustomize build . | kubectl apply -f -
-                  sleep 3
+                  sleep 10
                   kubectl delete deployment --selector=app=echo-buildtime,deploy!=$BUILD_NUMBER
                   echo "----- after old deploy remove"
                   kubectl get deployment -o wide
