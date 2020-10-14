@@ -41,7 +41,7 @@ podTemplate(
         }
         stage('update pods'){
             container('kustomize'){
-              dir('deployment'){
+              dir('bluegreen/deployment'){
                 sh '''
                 kustomize create --resources ./deployment.yaml
                 echo "----- before deploy"
@@ -53,7 +53,7 @@ podTemplate(
                 kubectl get deployment -o wide
                 '''
               }
-              dir('service'){
+              dir('bluegreen/service'){
                 sh '''
                 kustomize create --resources ./lb.yaml
                 while true;
