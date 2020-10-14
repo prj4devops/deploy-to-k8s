@@ -41,14 +41,12 @@ podTemplate(
         }
         stage('update pods'){
             container('kustomize'){
-                sh 'ls'
-                sh 'cd ./deployment'
-                sh 'ls'
+              dir('deployment'){
                 sh 'kustomize create --resources ./deployment.yaml'
-                sh 'cd ../service'
-                sh 'ls'
+              }
+              dir('service'){
                 sh 'kustomize create --resources ./lb.yaml'
-                sh 'cd ..'
+              }
                 sh 'blue-green.sh $BUILD_NUMBER'
             }
         }
