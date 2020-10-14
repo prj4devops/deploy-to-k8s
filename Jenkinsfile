@@ -47,6 +47,7 @@ podTemplate(
               dir('service'){
                 sh 'kustomize create --resources ./lb.yaml'
               }
+                sh 'ls'
                 sh 'blue-green.sh $BUILD_NUMBER'
             }
         }
