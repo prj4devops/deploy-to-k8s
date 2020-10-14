@@ -43,6 +43,7 @@ podTemplate(
             container('kustomize'){
                 sh 'ls'
                 sh 'cd ./deployment'
+                sh 'ls'
                 sh 'kustomize create --resources ./deployment.yaml'
                 sh 'cd ../service'
                 sh 'ls'
