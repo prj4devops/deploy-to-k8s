@@ -44,12 +44,12 @@ podTemplate(
               dir('bluegreen/deployment'){
                 sh '''
                 kustomize create --resources ./deployment.yaml
-                echo "새로운 파드를 포함하는 Deployment를 배포"
+                echo "deploy new deployment"
                 kustomize edit add label deploy:$BUILD_NUMBER -f
                 kustomize edit set namesuffix -- -$BUILD_NUMBER
                 kustomize edit set image 192.168.1.10:8443/echo-buildtime:$BUILD_NUMBER
                 kustomize build . | kubectl apply -f -
-                echo "새 Deployment가 배포된 것을 조회"
+                echo "retrieve new deployments"
                 kubectl get deployment -o wide
                 '''
               }
@@ -60,12 +60,12 @@ podTemplate(
                 do
                 export replicas=$(kubectl get deployment --selector=app=echo-buildtime,deploy=$BUILD_NUMBER -o jsonpath --template="{.items[0].status.replicas}")
                 export ready=$(kubectl get deployment --selector=app=echo-buildtime,deploy=$BUILD_NUMBER -o jsonpath --template="{.items[0].status.readyReplicas}")
-                echo "총 레플리카: $replicas, 준비된 레플리카: $ready"
+                echo "total replicas: $replicas, ready replicas: $ready"
                 if [ "$ready" == "$replicas" ]; then
-                  echo "모든 레플리카가 배포되었으므로 로드밸런서의 대상 Deployment 교체"
+                  echo "Since all replicas have been deployed replace the target deployemnt of the loadbalancer"
                   kustomize edit add label deploy:$BUILD_NUMBER -f
                   kustomize build . | kubectl apply -f -
-                  echo "현재 배포된 것과 일치하지 않는 Deployment를 삭제 후 조회"
+                  echo "delete old deployment resources"
                   kubectl delete deployment --selector=app=echo-buildtime,deploy!=$BUILD_NUMBER
                   kubectl get deployment -o wide
                   break
