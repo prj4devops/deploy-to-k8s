@@ -49,7 +49,7 @@ podTemplate(
                 kustomize edit set namesuffix -- -$BUILD_NUMBER
                 kustomize edit set image 192.168.1.10:8443/echo-buildtime:$BUILD_NUMBER
                 kustomize build . | kubectl apply -f -
-                echo "retrieve new deployments"
+                echo "retrieve new deployment"
                 kubectl get deployment -o wide
                 '''
               }
