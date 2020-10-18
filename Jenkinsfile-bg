@@ -22,7 +22,6 @@ podTemplate(
     hostPathVolume(mountPath: '/bin/docker', hostPath: '/bin/docker'),
   ]
 )
-
 {
     node(POD_LABEL) {
         stage('git scm update'){
@@ -77,6 +76,5 @@ podTemplate(
               }
             }
         }
-
     }
 }
